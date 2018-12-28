@@ -95,28 +95,34 @@ next()
     } else {
       console.log('现在路上没有车辆！');
     }
-    data[1].forEach((item, index, arr) => {
-      const n = data[0].id - item.stationSeqNum;
-      let distance = '';
-      if (n >= 0) {
-        distance = '距离你' + n + '站';
-      }
-      console.log('---------------------------------------------------------');
-      console.group();
-      console.log(
-        'id:',
-        item.busId.toString().padEnd(8),
-        '即将到站:',
-        padEnd(item.nextStation.toString(), 16),
-        '|',
-        distance
-      );
-      console.groupEnd();
-      if (index + 1 === arr.length) {
+    data[1]
+      .sort((a, b) => {
+        return a.stationSeqNum - b.stationSeqNum;
+      })
+      .forEach((item, index, arr) => {
+        const n = data[0].id - item.stationSeqNum;
+        let distance = '';
+        if (n >= 0) {
+          distance = '距离你' + n + '站';
+        }
         console.log(
           '---------------------------------------------------------'
         );
-      }
-    });
+        console.group();
+        console.log(
+          'id:',
+          item.busId.toString().padEnd(8),
+          '即将到站:',
+          padEnd(item.nextStation.toString(), 16),
+          '|',
+          distance
+        );
+        console.groupEnd();
+        if (index + 1 === arr.length) {
+          console.log(
+            '---------------------------------------------------------'
+          );
+        }
+      });
     console.log('=======================================================');
   });
