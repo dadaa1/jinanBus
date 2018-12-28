@@ -1,0 +1,14 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# dependencies
+/node_modules
+# production
+/dist
+/dev
+# misc
+npm-debug.log*
+yarn.lock
+/.idea
+/yarn-error.log
+/mock
+/.vscode
+*/.DS_store
