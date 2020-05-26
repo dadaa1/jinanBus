@@ -10,7 +10,7 @@ const promptList = [
     message: '请输入你要查询的公交车:',
     name: 'bus',
     default: '115',
-    validate: function(val) {
+    validate: function (val) {
       if (!val) {
         return '请输入你要查询的车辆';
       }
@@ -47,7 +47,7 @@ function init() {
         message: '请选择你要乘坐的车辆:',
         name: 'id',
         choices: Object.keys(busMap),
-        filter: function(val) {
+        filter: function (val) {
           return busMap[val];
         }
       };
@@ -60,9 +60,9 @@ function next() {
       return getStation(data.id);
     })
     .then(data => {
-      const stations = data.stations.map(item => {
+      const stations = data.stations.map((item, index) => {
         return {
-          id: item.id,
+          id: index,
           stationName: item.stationName
         };
       });
@@ -71,12 +71,12 @@ function next() {
         message: '请选择你所在的车站:',
         name: 'id',
         choices: stations.map(item => item.stationName),
-        filter: function(val) {
+        filter: function (val) {
           return stations.find(item => item.stationName === val).id;
         }
       };
       return Promise.all([
-        Promise.resolve({ id: data.id }),
+        Promise.resolve({ id: data.id, list: stations }),
         inquirer.prompt(list)
       ]);
     });
@@ -85,16 +85,16 @@ function next() {
 next()
   .then(data => {
     return Promise.all([
-      Promise.resolve({ id: data[1].id }),
+      Promise.resolve({ id: data[1].id, list: data[0].list }),
       getDetail(data[0].id)
     ]);
   })
   .then(data => {
-    // console.log(data);
-    console.log('=======================================================');
-    if (data[1].length) {
-      console.log('在路上的车有这些:');
-    } else {
+    const map = {};
+    data[0].list.forEach((el, i) => {
+      map[i] = el.stationName;
+    });
+    if (!data[1].length) {
       console.log('现在路上没有车辆！');
     }
     data[1]
@@ -107,24 +107,26 @@ next()
         if (n >= 0) {
           distance = '距离你' + n + '站';
         }
+        console.group();
         console.log(
           '---------------------------------------------------------'
         );
-        console.group();
         console.log(
+          '|',
           'id:',
           item.busId.toString().padEnd(8),
-          '即将到站:',
-          padEnd(item.nextStation.toString(), 16),
           '|',
-          distance
+          '即将到站:',
+          padEnd(map[item.stationSeqNum].toString(), 16),
+          '|',
+          padEnd(distance, 10),
+          '|',
         );
-        console.groupEnd();
         if (index + 1 === arr.length) {
           console.log(
             '---------------------------------------------------------'
           );
         }
+        console.groupEnd();
       });
-    console.log('=======================================================');
   });
