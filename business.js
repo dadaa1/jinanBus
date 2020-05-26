@@ -1,8 +1,13 @@
 const superagent = require('superagent');
 
-const url = 'http://60.216.101.229';
+const url = 'http://iwaybook.369cx.cn';
+// const httpauth = 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6Ik1qQXpZamxtWTJVdE1UVTRZaTAwTURVMUxXRTRaVEl0T1RObU5tUTFNamMyTmpRMyIsInJvbGUiOiJWaXNpdG9yIiwibmFtZWlkIjoiLTEyNzU2Mjc4NzEiLCJqdGkiOiJjZjYxYmFlZS0zYTBkLTQzMTctODEzYy0yNTczNDkzNmJiYjciLCJuYmYiOjE1Nzc2MjY4OTIsImV4cCI6MTczNTQ3OTY5MiwiaWF0IjoxNTc3NjI2ODkyLCJpc3MiOiJ3ZWIuMzY5Y3guY24iLCJhdWQiOiJhcGkud2ViLjM2OWN4LmNuIn0.ZQysaz6fEHRMLnHIQgfySpk6EtWTqE5puINlVq-RfA9u6DqzlcmH6kq7mTRSCz5k93fAR17Q-ya9kHJovLXe30-T254rK2L-XOnbiJLlX7z2ZjlzUrJJKXr78eKaJI-3mS370hoyTZMhGr6Ui41v1LaPvhrs7N-CD05NUDuP-RWrj3WyRpqM56SrN-WNfX0oU5RKOqYusou_lsPQXuIe450ti65Ajq0-GtKgEPa-bkpFYxC7OLaVfwo60upAgTP9AFk3vfnUCbVwNptG1dSNo1zPTQh2tfnmEK3bjnDuMXkfRKzxnjNEW7tmDiKCVwsGco0QfvFKZFuOav8AjZ2XgA'
+// const headersold = { 'version': 'ios-com.travelincity.WayBookJN-4392' }
+// const headersget = { 'authorization': httpauth, 'user-agent': 'Mozilla/5.0 (Linux; Android 6.0.1; samsung) Cx369Android/5200' }
+// const headerspost = { 'content-type': 'application/json; charset=UTF-8', 'authorization': httpauth }
 const header = {
-  version: 'android-insigma.waybook.jinan-2349'
+  version: 'android-insigma.waybook.jinan-2363',
+  'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:61.0) Gecko/20100101 Firefox/61.0',
 };
 
 function getList(searchParam) {
@@ -35,6 +40,7 @@ function getDetail(id) {
           rej(err);
           return;
         }
+        // console.log(resp.text);
         const data = JSON.parse(resp.text).result;
         res(data);
       });
@@ -52,6 +58,7 @@ function getStation(id) {
           rej(err);
           return;
         }
+        // console.log(resp.text);
         const data = JSON.parse(resp.text).result;
         res(data);
       });
